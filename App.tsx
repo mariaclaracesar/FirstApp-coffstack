@@ -1,39 +1,52 @@
+import { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Button } from "./components/Button";
-import { TextInput } from "./components/TextInput";
 
 export default function App() {
+  const [count, setCount] = useState<number>(0);
+  const [showCount, setShowCount] = useState(true);
+
+  console.log("renderizou");
+
+  //let count = 0;
+
+  function increment() {
+    setCount(count + 1);
+    console.log(count);
+  }
+
+  function decrement() {
+    setCount(count - 1);
+    console.log(count);
+  }
+
+  function toggleCount() {
+    setShowCount(!showCount);
+  }
+
   return (
     <View style={styles.container}>
-      <Text>Profissional React Native</Text>
+      {showCount && <Text style={styles.count}>{count}</Text>}
 
-      <TextInput autoCapitalize="none" placeholder="Digite seu e-mail" />
-      <TextInput
-        autoCapitalize="none"
-        secureTextEntry
-        placeholder="Digite sua senha"
-      />
-
-      <Button
-        style={{ marginTop: 20 }}
-        onPress={() => console.log("Entrar")}
-        title={"Entrar"}
-      />
-      <Button
-        style={{ marginTop: 10 }}
-        onPress={() => console.log("Criar uma conta")}
-        title="Criar conta"
-        variant="secondary"
-      />
+      <Button onPress={increment} title="+ 1" style={styles.buttonContainer} />
+      <Button onPress={decrement} title="- 1" style={styles.buttonContainer} />
+      <Button variant="secondary" onPress={toggleCount} title="show" />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  count: {
+    fontSize: 30,
+    marginBottom: 50,
+    fontWeight: "bold",
+  },
+  buttonContainer: {
+    marginBottom: 20,
+  },
   container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
+    marginTop: 100,
     justifyContent: "center",
+    alignItems: "center",
   },
 });
