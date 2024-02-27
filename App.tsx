@@ -1,52 +1,62 @@
 import { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { Button } from "./components/Button";
+import { TextInput } from "./components/TextInput";
 
 export default function App() {
-  const [count, setCount] = useState<number>(0);
-  const [showCount, setShowCount] = useState(true);
+  const [formValues, setFormValues] = useState({
+    firstName: "",
+    lastName: "",
+    email: "maria@gmail.com",
+    address: {
+      country: "Brazil",
+      city: "",
+    },
+  });
 
-  console.log("renderizou");
-
-  //let count = 0;
-
-  function increment() {
-    setCount(count + 1);
-    console.log(count);
+  function updateFirst(text: string) {
+    const updateValues = { ...formValues, firstName: text };
+    setFormValues(updateValues);
+    console.log(formValues);
+  }
+  function updateLast(text: string) {
+    setFormValues({ ...formValues, lastName: text });
   }
 
-  function decrement() {
-    setCount(count - 1);
-    console.log(count);
-  }
-
-  function toggleCount() {
-    setShowCount(!showCount);
+  // copia de um objeto aninhado
+  function updateCity(text: string) {
+    setFormValues({
+      ...formValues,
+      address: {
+        ...formValues.address,
+        city: text,
+      },
+    });
   }
 
   return (
     <View style={styles.container}>
-      {showCount && <Text style={styles.count}>{count}</Text>}
+      <TextInput value={formValues.firstName} onChangeText={updateFirst} />
+      <TextInput value={formValues.lastName} onChangeText={updateLast} />
+      <TextInput value={formValues.address.city} onChangeText={updateCity} />
 
-      <Button onPress={increment} title="+ 1" style={styles.buttonContainer} />
-      <Button onPress={decrement} title="- 1" style={styles.buttonContainer} />
-      <Button variant="secondary" onPress={toggleCount} title="show" />
+      <Text style={styles.text}>
+        {`${formValues.firstName} ${formValues.lastName}:\n${formValues.email} \n${formValues.address.country} - ${formValues.address.city}`}
+      </Text>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  count: {
-    fontSize: 30,
-    marginBottom: 50,
+  text: {
+    fontSize: 16,
+    marginTop: 50,
     fontWeight: "bold",
-  },
-  buttonContainer: {
-    marginBottom: 20,
+    marginHorizontal: 10,
+    textAlign: "center",
   },
   container: {
-    marginTop: 100,
     justifyContent: "center",
     alignItems: "center",
+    marginTop: 250,
   },
 });
